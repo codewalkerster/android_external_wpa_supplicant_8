@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <net/if_arp.h>
 
+#include "wireless_copy.h"
 #include "linux_wext.h"
 #include "common.h"
 #include "eloop.h"
@@ -2492,7 +2493,11 @@ const struct wpa_driver_ops wpa_driver_wext_ops = {
 	.set_operstate = wpa_driver_wext_set_operstate,
 	.get_radio_name = wext_get_radio_name,
 #ifdef ANDROID
-	.sched_scan = wext_sched_scan,
-	.stop_sched_scan = wext_stop_sched_scan,
+//	.sched_scan = wext_sched_scan,
+//	.stop_sched_scan = wext_stop_sched_scan,
+
+    // add
+	.signal_poll = wpa_driver_signal_poll,
+	.driver_cmd = wpa_driver_wext_driver_cmd,
 #endif /* ANDROID */
 };
