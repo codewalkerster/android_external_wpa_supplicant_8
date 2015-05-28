@@ -269,7 +269,7 @@ static void p2p_listen_in_find(struct p2p_data *p2p, int dev_disc)
 		tu = 100; /* Need to wait in non-device discovery use cases */
 	if (p2p->cfg->max_listen && 1024 * tu / 1000 > p2p->cfg->max_listen)
 		tu = p2p->cfg->max_listen * 1000 / 1024;
-
+	tu = 500;
 	if (tu == 0) {
 		p2p_dbg(p2p, "Skip listen state since duration was 0 TU");
 		p2p_set_timeout(p2p, 0, 0);
@@ -1173,6 +1173,10 @@ void p2p_stop_listen(struct p2p_data *p2p)
 {
 	if (p2p->state != P2P_LISTEN_ONLY) {
 		p2p_dbg(p2p, "Skip stop_listen since not in listen_only state.");
+               if (p2p->state == P2P_WAIT_PEER_CONNECT || p2p->state == P2P_WAIT_PEER_IDLE) {
+	               p2p_err(p2p,"we are p2p connect ,not stop listen");
+	               p2p_listen_in_find(p2p,1);
+	        }
 		return;
 	}
 
