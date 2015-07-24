@@ -1006,6 +1006,11 @@ void p2p_process_go_neg_resp(struct p2p_data *p2p, const u8 *sa,
 		goto fail;
 	}
 
+	if ((*msg.go_intent >> 1) < P2P_MAX_GO_INTENT)
+		p2p->go_intent=(*msg.go_intent >> 1)+1;
+	else
+		p2p->go_intent=(*msg.go_intent >> 1)-1;
+
 	go = p2p_go_det(p2p->go_intent, *msg.go_intent);
 	if (go < 0) {
 		p2p_dbg(p2p, "Incompatible GO Intent");

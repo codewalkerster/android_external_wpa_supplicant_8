@@ -4156,8 +4156,8 @@ static int wpas_p2p_start_go_neg(struct wpa_supplicant *wpa_s,
 				 unsigned int force_freq, int persistent_group,
 				 struct wpa_ssid *ssid, unsigned int pref_freq)
 {
-	if (persistent_group && wpa_s->conf->persistent_reconnect)
-		persistent_group = 2;
+//	if (persistent_group && wpa_s->conf->persistent_reconnect)
+		persistent_group = 0;
 
 	/*
 	 * Increase GO config timeout if HT40 is used since it takes some time
