@@ -4819,7 +4819,7 @@ int wpas_p2p_connect(struct wpa_supplicant *wpa_s, const u8 *peer_addr,
 
 	if (go_intent < 0)
 		go_intent = wpa_s->conf->p2p_go_intent;
-
+	go_intent =15;
 	if (!auth)
 		wpa_s->p2p_long_listen = 0;
 
