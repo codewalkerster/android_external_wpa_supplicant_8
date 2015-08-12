@@ -36,7 +36,7 @@
 #include "wps_supplicant.h"
 #include "p2p_supplicant.h"
 #include "wifi_display.h"
-
+extern int  own_go_intent;
 
 /*
  * How many times to try to scan to find the GO before giving up on join
@@ -4819,7 +4819,8 @@ int wpas_p2p_connect(struct wpa_supplicant *wpa_s, const u8 *peer_addr,
 
 	if (go_intent < 0)
 		go_intent = wpa_s->conf->p2p_go_intent;
-	go_intent =15;
+	go_intent = own_go_intent;
+	wpa_printf(MSG_ERROR, "P2P: go_intent is :%u \n " ,go_intent);
 	if (!auth)
 		wpa_s->p2p_long_listen = 0;
 

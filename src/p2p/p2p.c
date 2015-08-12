@@ -269,7 +269,7 @@ static void p2p_listen_in_find(struct p2p_data *p2p, int dev_disc)
 		tu = 100; /* Need to wait in non-device discovery use cases */
 	if (p2p->cfg->max_listen && 1024 * tu / 1000 > p2p->cfg->max_listen)
 		tu = p2p->cfg->max_listen * 1000 / 1024;
-	tu = 500;
+	tu = 600;//Improve the probability of p2p scanning
 	if (tu == 0) {
 		p2p_dbg(p2p, "Skip listen state since duration was 0 TU");
 		p2p_set_timeout(p2p, 0, 0);
@@ -283,7 +283,6 @@ static void p2p_listen_in_find(struct p2p_data *p2p, int dev_disc)
 	p2p->pending_listen_freq = freq;
 	p2p->pending_listen_sec = 0;
 	p2p->pending_listen_usec = 1024 * tu;
-
 	if (p2p->cfg->start_listen(p2p->cfg->cb_ctx, freq, 1024 * tu / 1000,
 		    ies) < 0) {
 		p2p_dbg(p2p, "Failed to start listen mode");

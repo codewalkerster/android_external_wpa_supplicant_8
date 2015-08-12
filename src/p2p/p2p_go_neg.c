@@ -14,7 +14,7 @@
 #include "wps/wps_defs.h"
 #include "p2p_i.h"
 #include "p2p.h"
-
+int  own_go_intent=0;
 
 static int p2p_go_det(u8 own_intent, u8 peer_value)
 {
@@ -644,6 +644,10 @@ void p2p_process_go_neg_req(struct p2p_data *p2p, const u8 *sa,
 			MAC2STR(dev->info.p2p_device_addr));
 		p2p_add_dev_info(p2p, sa, dev, &msg);
 	}
+	if ((*msg.go_intent >> 1) < P2P_MAX_GO_INTENT)
+		own_go_intent=(*msg.go_intent >> 1)+1;
+	else
+		own_go_intent=(*msg.go_intent >> 1)-1;
 
 	if (dev && dev->flags & P2P_DEV_USER_REJECTED) {
 		p2p_dbg(p2p, "User has rejected this peer");
