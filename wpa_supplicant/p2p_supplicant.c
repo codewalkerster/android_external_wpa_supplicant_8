@@ -4819,7 +4819,14 @@ int wpas_p2p_connect(struct wpa_supplicant *wpa_s, const u8 *peer_addr,
 
 	if (go_intent < 0)
 		go_intent = wpa_s->conf->p2p_go_intent;
+#ifdef BOARD_WIFI_REALTEK
 	go_intent = own_go_intent;
+#else
+	if (own_go_intent >2)
+		 go_intent =own_go_intent-2;
+	else
+		go_intent=2;
+#endif
 	wpa_printf(MSG_ERROR, "P2P: go_intent is :%u \n " ,go_intent);
 	if (!auth)
 		wpa_s->p2p_long_listen = 0;
