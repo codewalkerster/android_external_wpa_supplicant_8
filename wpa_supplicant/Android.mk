@@ -1561,7 +1561,7 @@ endif
 ifneq ($(BOARD_WPA_SUPPLICANT_PRIVATE_LIB),)
 LOCAL_STATIC_LIBRARIES += $(BOARD_WPA_SUPPLICANT_PRIVATE_LIB)
 endif
-LOCAL_SHARED_LIBRARIES := libc libcutils liblog
+LOCAL_SHARED_LIBRARIES := libc libcutils liblog libhardware_legacy
 ifdef CONFIG_EAP_PROXY
 LOCAL_STATIC_LIBRARIES += $(LIB_STATIC_EAP_PROXY)
 LOCAL_SHARED_LIBRARIES += $(LIB_SHARED_EAP_PROXY)
@@ -1585,7 +1585,7 @@ endif
 endif
 LOCAL_CFLAGS := $(L_CFLAGS)
 LOCAL_SRC_FILES := $(OBJS)
-LOCAL_C_INCLUDES := $(INCLUDES)
+LOCAL_C_INCLUDES := $(INCLUDES) $(call include-path-for, libhardware_legacy)/hardware_legacy
 include $(BUILD_EXECUTABLE)
 
 ########################
