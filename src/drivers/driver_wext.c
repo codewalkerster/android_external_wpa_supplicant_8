@@ -2345,6 +2345,36 @@ static const char * wext_get_radio_name(void *priv)
 
 #ifdef ANDROID
 
+static int wpa_driver_wext_signal_poll(void *priv, struct wpa_signal_info *si)
+{
+	struct wpa_driver_wext_data *drv = priv;
+	struct iw_statistics stats;
+	struct iwreq iwr;
+
+	os_memset(si, 0, sizeof(*si));
+	si->current_signal = -9999;
+	si->current_noise = 9999;
+	si->chanwidth = CHAN_WIDTH_UNKNOWN;
+
+	os_memset(&iwr, 0, sizeof(iwr));
+	os_strlcpy(iwr.ifr_name, drv->ifname, IFNAMSIZ);
+	iwr.u.data.pointer = (caddr_t) &stats;
+	iwr.u.data.length = sizeof(stats);
+	iwr.u.data.flags = 1;
+
+	if (ioctl(drv->ioctl_sock, SIOCGIWSTATS, &iwr) < 0) {
+		wpa_printf(MSG_ERROR, "WEXT: SIOCGIWSTATS: %s",
+				strerror(errno));
+		return -1;
+	}
+
+	si->current_signal = stats.qual.level -
+		((stats.qual.updated & IW_QUAL_DBM) ? 0x100 : 0);
+	si->current_noise = stats.qual.noise -
+		((stats.qual.updated & IW_QUAL_DBM) ? 0x100 : 0);
+	return 0;
+}
+
 static int android_wext_cmd(struct wpa_driver_wext_data *drv, const char *cmd)
 {
 	struct iwreq iwr;
@@ -2490,7 +2520,7 @@ const struct wpa_driver_ops wpa_driver_wext_ops = {
 //	.stop_sched_scan = wext_stop_sched_scan,
 
     // add
-	.signal_poll = wpa_driver_signal_poll,
+	.signal_poll = wpa_driver_wext_signal_poll,
 	.driver_cmd = wpa_driver_wext_driver_cmd,
 #endif /* ANDROID */
 };
