@@ -325,7 +325,7 @@ SupplicantStatus Supplicant::removeInterfaceInternal(
 		return {SupplicantStatusCode::FAILURE_IFACE_UNKNOWN, ""};
 	}
     
-	if (os_strncmp(wpa_s->ifname, "p2p-dev-wlan", 12) == 0) {
+	if (os_strncmp(wpa_s->ifname, "p2p", 3) == 0) {
 		wpa_printf(MSG_ERROR, "bcm wifi not removeInterfaceInternal");
 		return {SupplicantStatusCode::SUCCESS, ""};
 	}
